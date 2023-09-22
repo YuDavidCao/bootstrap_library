@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "173662402678",
+    "project_id": "publib-412d6",
+    "storage_bucket": "publib-412d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173662402678:android:293c2910630048a8718757",
+        "android_client_info": {
+          "package_name": "com.example.bootstrap_library"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDY6xckcng1CRTgCcBZuZKyx1clzh82_Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
