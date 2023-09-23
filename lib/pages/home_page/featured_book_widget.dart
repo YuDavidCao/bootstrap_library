@@ -8,11 +8,6 @@ class FeaturedBookWidget extends StatelessWidget {
   final DocumentSnapshot bookData;
   const FeaturedBookWidget({super.key, required this.bookData});
 
-  Future<Widget> renderBookImage() async {
-    return Image.network(
-        await FirebaseStorageService.getImageBookImageUrl(bookData.id));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -49,7 +44,7 @@ class FeaturedBookWidget extends StatelessWidget {
               SizedBox(
                 height: 100,
                 child: FutureBuilder<Widget>(
-                  future: renderBookImage(),
+                  future: FirebaseStorageService.renderBookImage(bookData.id),
                   builder:
                       (BuildContext context, AsyncSnapshot<Widget> snapshot) {
                     if (snapshot.hasData) {

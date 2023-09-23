@@ -1,5 +1,6 @@
 import 'package:bootstrap_library/constants.dart';
 import 'package:bootstrap_library/firebase/firebase_storage_service.dart';
+import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,16 +9,14 @@ class NormalBookWidget extends StatelessWidget {
   final DocumentSnapshot bookData;
   const NormalBookWidget({super.key, required this.bookData});
 
-  Future<Widget> renderBookImage() async {
-    return Image.network(
-        await FirebaseStorageService.getImageBookImageUrl(bookData.id));
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //TODO
+        Navigator.of(context)
+            .pushNamed("/BookSummaryPage", arguments: [bookData]);
       },
       child: Container(
         height: 200,
@@ -30,7 +29,7 @@ class NormalBookWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             FutureBuilder<Widget>(
-              future: renderBookImage(),
+              future: FirebaseStorageService.renderBookImage(bookData.id),
               builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!;

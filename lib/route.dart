@@ -1,6 +1,9 @@
 import 'package:bootstrap_library/constants.dart';
+import 'package:bootstrap_library/model/book_summry.dart';
+import 'package:bootstrap_library/pages/book_summary_page.dart';
 import 'package:bootstrap_library/pages/home_page/home_page.dart';
 import 'package:bootstrap_library/pages/login_page.dart';
+import 'package:bootstrap_library/pages/read_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -17,6 +20,16 @@ class RouteGenerator {
       case '/LoginPage':
         return PageTransition(
           child: const LoginPage(),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: pageTransitionTime),
+          reverseDuration: const Duration(milliseconds: pageTransitionTime),
+        );
+      case '/BookSummaryPage':
+        List<dynamic> data = settings.arguments as List<dynamic>;
+        return PageTransition(
+          child: BookSummaryPage(
+            bookData: data[0],
+          ),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: pageTransitionTime),
           reverseDuration: const Duration(milliseconds: pageTransitionTime),

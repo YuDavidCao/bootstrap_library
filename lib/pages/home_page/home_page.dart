@@ -54,28 +54,34 @@ class _HomePageState extends State<HomePage> {
               isSubPage: false, onPageName: "HomePage"),
           floatingActionButton: Wrap(
             children: [
-              FloatingActionButton(onPressed: () async {
-                final ImagePicker picker = ImagePicker();
-                XFile? img =
-                    await picker.pickImage(source: ImageSource.gallery);
-                if (img != null && context.mounted) {
-                  await FirebaseStorageService.uploadPictureToImage(
-                      File(img.path), "David111TestTitle1", context);
-                }
-              }),
+              FloatingActionButton(
+                onPressed: () async {
+                  final ImagePicker picker = ImagePicker();
+                  XFile? img =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (img != null && context.mounted) {
+                    await FirebaseStorageService.uploadPictureToImage(
+                        File(img.path), "David111TestTitle1", context);
+                  }
+                },
+                heroTag: null,
+              ),
               const SizedBox(
                 width: globalEdgePadding,
               ),
-              FloatingActionButton(onPressed: () {
-                FirebaseFirestoreService.uploadBookData(
-                    "David111",
-                    "TestTitle1",
-                    "TestSummary",
-                    randtext,
-                    "test11",
-                    context,
-                    false);
-              })
+              FloatingActionButton(
+                onPressed: () {
+                  FirebaseFirestoreService.uploadBookData(
+                      "David111",
+                      "TestTitle1",
+                      "TestSummary",
+                      randtext,
+                      "test11",
+                      context,
+                      false);
+                },
+                heroTag: null,
+              )
             ],
           ),
         );

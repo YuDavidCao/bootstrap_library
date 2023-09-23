@@ -25,4 +25,8 @@ class FirebaseStorageService {
         .child("image/$bookId")
         .getDownloadURL();
   }
+
+  static Future<Widget> renderBookImage(String id) async {
+    return Image.network(await FirebaseStorageService.getImageBookImageUrl(id));
+  }
 }
