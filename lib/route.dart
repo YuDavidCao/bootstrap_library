@@ -1,5 +1,5 @@
 import 'package:bootstrap_library/constants.dart';
-import 'package:bootstrap_library/pages/home_page.dart';
+import 'package:bootstrap_library/pages/home_page/home_page.dart';
 import 'package:bootstrap_library/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
