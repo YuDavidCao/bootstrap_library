@@ -6,7 +6,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'pages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
               900: Color(0xFF517551),
             }),
           ),
-          home: const HomePage(),
+          home: const LoginPage(),
           onGenerateRoute: RouteGenerator.generateRoute,
         ),
       ),

@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:bootstrap_library/constants.dart';
 import 'package:bootstrap_library/controller/book_summary_state.dart';
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase/firebase_firestore_service.dart';
+import 'package:bootstrap_library/firebase/firebase_storage_service.dart';
 import 'package:bootstrap_library/widgets/global_botton_navigation_bar.dart';
 import 'package:bootstrap_library/widgets/global_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,17 +32,16 @@ class _HomePageState extends State<HomePage> {
               create: (_) => BookSummaryState(userState.email),
               child: Consumer<BookSummaryState>(
                 builder: (context, BookSummaryState bookSummaryState, child) {
-                  return Column(
+                  return ListView(
                     children: [
-                      const SizedBox(
-                        height: globalEdgePadding * 2,
-                      ),
                       GlobalSearchBar(initialText: "", performSearch: (a) {}),
                       if (bookSummaryState.featuredBook != null)
                         FeaturedBookWidget(
                             bookData: bookSummaryState.featuredBook!),
+                      const SizedBox(
+                        height: globalEdgePadding,
+                      ),
                       ...bookSummaryState.loadedBooksummary.entries.map((e) {
-                        print(e.value.length);
                         return TypeOfBookWidget(type: e.key, bookList: e.value);
                       }).toList()
                     ],
@@ -49,10 +52,32 @@ class _HomePageState extends State<HomePage> {
           ),
           bottomNavigationBar: const GlobalBottomAppBar(
               isSubPage: false, onPageName: "HomePage"),
-          floatingActionButton: FloatingActionButton(onPressed: () {
-            FirebaseFirestoreService.uploadBookData("David111", "TestTitle1",
-                "TestSummary", randtext, "test11", context, false);
-          }),
+          floatingActionButton: Wrap(
+            children: [
+              FloatingActionButton(onPressed: () async {
+                final ImagePicker picker = ImagePicker();
+                XFile? img =
+                    await picker.pickImage(source: ImageSource.gallery);
+                if (img != null && context.mounted) {
+                  await FirebaseStorageService.uploadPictureToImage(
+                      File(img.path), "David111TestTitle1", context);
+                }
+              }),
+              const SizedBox(
+                width: globalEdgePadding,
+              ),
+              FloatingActionButton(onPressed: () {
+                FirebaseFirestoreService.uploadBookData(
+                    "David111",
+                    "TestTitle1",
+                    "TestSummary",
+                    randtext,
+                    "test11",
+                    context,
+                    false);
+              })
+            ],
+          ),
         );
       },
     );
@@ -80,7 +105,7 @@ class TypeOfBookWidget extends StatelessWidget {
           thickness: 2,
         ),
         SizedBox(
-          height: 100,
+          height: 200,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: bookList.length,
@@ -101,35 +126,76 @@ class FeaturedBookWidget extends StatelessWidget {
   final DocumentSnapshot bookData;
   const FeaturedBookWidget({super.key, required this.bookData});
 
+  Future<Widget> renderBookImage() async {
+    return Image.network(
+        await FirebaseStorageService.getImageBookImageUrl(bookData.id));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
-        Expanded(
-          child: Container(
-            decoration: const BoxDecoration(
-                color: thirtyUIColor,
-                borderRadius: BorderRadius.all(Radius.circular(12))),
-            padding: const EdgeInsets.all(globalEdgePadding),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  bookData["title"],
-                  style: GoogleFonts.roboto(
-                      textStyle: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+        Container(
+          decoration: const BoxDecoration(
+              color: thirtyUIColor,
+              borderRadius: BorderRadius.all(Radius.circular(12))),
+          padding: const EdgeInsets.all(globalEdgePadding),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bookData["title"],
+                      style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                    const SizedBox(
+                      height: globalEdgePadding,
+                    ),
+                    Text(
+                      bookData["author"],
+                      style: const TextStyle(color: Colors.white),
+                    )
+                  ],
                 ),
-                const SizedBox(
-                  height: globalEdgePadding,
+              ),
+              SizedBox(
+                height: 100,
+                child: FutureBuilder<Widget>(
+                  future: renderBookImage(),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                    if (snapshot.hasData) {
+                      return snapshot.data!;
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        ),
+                      );
+                    }
+                  },
                 ),
-                Text(
-                  bookData["author"],
-                  style: const TextStyle(color: Colors.white),
-                )
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+        Positioned(
+          top: -10,
+          right: -10,
+          child: SizedBox(
+            height: 70,
+            width: 70,
+            child: Image.asset("assets/featured.png"),
+          ),
+        )
       ],
     );
   }
@@ -139,9 +205,57 @@ class NormalBookWidget extends StatelessWidget {
   final DocumentSnapshot bookData;
   const NormalBookWidget({super.key, required this.bookData});
 
+  Future<Widget> renderBookImage() async {
+    return Image.network(
+        await FirebaseStorageService.getImageBookImageUrl(bookData.id));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return GestureDetector(
+      onTap: () {
+        //TODO
+      },
+      child: Container(
+        height: 200,
+        width: 100,
+        // decoration: BoxDecoration(
+        //   border: Border.all(color: Colors.black),
+        // ),
+        padding: const EdgeInsets.all(globalMarginPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FutureBuilder<Widget>(
+              future: renderBookImage(),
+              builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                if (snapshot.hasData) {
+                  return snapshot.data!;
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1,
+                    ),
+                  );
+                }
+              },
+            ),
+            const SizedBox(
+              height: globalMarginPadding,
+            ),
+            Text(
+              bookData["title"],
+              style: GoogleFonts.roboto(
+                  textStyle: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold)),
+            ),
+            Text(bookData["author"]),
+          ],
+        ),
+      ),
+    );
   }
 }
 
