@@ -1,4 +1,5 @@
 import 'package:bootstrap_library/controller/user_state.dart';
+import 'package:bootstrap_library/widgets/global_botton_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,10 +16,12 @@ class _HomePageState extends State<HomePage> {
     return Consumer<UserState>(
       builder: (context, UserState userState, child) {
         return Scaffold(
-          appBar: AppBar(),
+          // appBar: AppBar(),
           body: const Column(
             children: [Text("hello")],
           ),
+          bottomNavigationBar: const GlobalBottomAppBar(
+              isSubPage: false, onPageName: "HomePage"),
         );
       },
     );
