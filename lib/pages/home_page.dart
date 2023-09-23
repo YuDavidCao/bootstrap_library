@@ -4,6 +4,7 @@ import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase/firebase_firestore_service.dart';
 import 'package:bootstrap_library/widgets/global_botton_navigation_bar.dart';
 import 'package:bootstrap_library/widgets/global_search_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,10 +32,9 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: globalEdgePadding * 2,
                       ),
-                      GlobalSearchBar(initialText: "", performSearch: (a) {}),
-                      ...bookSummaryState.loadedBooksummary.map((e) {
-                        print(1);
-                        return Text(e["author"]);
+                      ...bookSummaryState.loadedBooksummary.entries.map((e) {
+                        print(e.value.length);
+                        return TypeOfBookWidget(type: e.key, bookList: e.value);
                       }).toList()
                     ],
                   );
@@ -45,12 +45,69 @@ class _HomePageState extends State<HomePage> {
           bottomNavigationBar: const GlobalBottomAppBar(
               isSubPage: false, onPageName: "HomePage"),
           floatingActionButton: FloatingActionButton(onPressed: () {
-            FirebaseFirestoreService.uploadBookData("David", "TestTitle",
-                "TestSummary", randtext, "test", context, false);
+            FirebaseFirestoreService.uploadBookData("David111", "TestTitle1",
+                "TestSummary", randtext, "test11", context, false);
           }),
         );
       },
     );
+  }
+}
+
+class TypeOfBookWidget extends StatelessWidget {
+  final String type;
+  final List<DocumentSnapshot> bookList;
+  const TypeOfBookWidget(
+      {super.key, required this.type, required this.bookList});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: globalMarginPadding,
+        ),
+        Text(type),
+        const Divider(
+          color: Colors.grey,
+          thickness: 2,
+        ),
+        SizedBox(
+          height: 100,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: bookList.length,
+            itemBuilder: (context, index) {
+              return NormalBookWidget(bookData: bookList[index]);
+            },
+          ),
+        ),
+        const SizedBox(
+          height: globalMarginPadding,
+        ),
+      ],
+    );
+  }
+}
+
+class FeaturedBookWidget extends StatelessWidget {
+  const FeaturedBookWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+class NormalBookWidget extends StatelessWidget {
+  final DocumentSnapshot bookData;
+  const NormalBookWidget({super.key, required this.bookData});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
 

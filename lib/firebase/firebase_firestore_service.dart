@@ -16,8 +16,14 @@ class FirebaseFirestoreService {
     }
   }
 
-  static void uploadBookData(String author, String title, String summary,
-      String fullText, String bookType, BuildContext buildContext, bool featured) async {
+  static void uploadBookData(
+      String author,
+      String title,
+      String summary,
+      String fullText,
+      String bookType,
+      BuildContext buildContext,
+      bool featured) async {
     final CollectionReference summaryCollectionReference =
         FirebaseFirestore.instance.collection('BookSummary');
     final CollectionReference textCollectionReference =
@@ -41,6 +47,7 @@ class FirebaseFirestoreService {
         "author": author,
         "title": title,
         "summary": summary,
+        "bookType": bookType,
         "totalReviewerCount": 0,
         "totalReviewPoints": 0,
         "length": fullText.split(" ").length,

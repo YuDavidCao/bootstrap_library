@@ -5,7 +5,23 @@ import 'package:flutter/material.dart';
 
 class BookSummaryState with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _subscription;
-  List<DocumentSnapshot> _loadedBooksummary = [];
+  Map<String, List<DocumentSnapshot>> _loadedBooksummary = {};
+
+  Map<String, List<DocumentSnapshot>> get loadedBooksummary =>
+      _loadedBooksummary;
+
+  set loadedBooksummary(Map<String, List<DocumentSnapshot>> value) {
+    _loadedBooksummary = value;
+  }
+
+  DocumentSnapshot? _featuredBook;
+
+  DocumentSnapshot? get featuredBook => _featuredBook;
+
+  set featuredBook(DocumentSnapshot? value) {
+    _featuredBook = value;
+  }
+
   late String _currentUserEmail;
 
   String get currentUserEmail => _currentUserEmail;
@@ -16,12 +32,6 @@ class BookSummaryState with ChangeNotifier {
 
   final Query<Map<String, dynamic>> _currentQuery =
       FirebaseFirestore.instance.collection("BookSummary");
-
-  List<DocumentSnapshot> get loadedBooksummary => _loadedBooksummary;
-
-  set loadedClassroom(List<DocumentSnapshot> value) {
-    _loadedBooksummary = value;
-  }
 
   BookSummaryState(String currentUserEmail) {
     _currentUserEmail = currentUserEmail;
@@ -37,7 +47,15 @@ class BookSummaryState with ChangeNotifier {
   void loadClassroom() {
     _subscription?.cancel();
     _subscription = _currentQuery.snapshots().listen((querySnapshot) {
-      _loadedBooksummary = querySnapshot.docs;
+      List<DocumentSnapshot> temp = querySnapshot.docs;
+      _loadedBooksummary = {};
+      for (int i = 0; i < temp.length; i++) {
+        if (_loadedBooksummary.containsKey(temp[i]["bookType"])) {
+          _loadedBooksummary[temp[i]["bookType"]]!.add(temp[i]);
+        } else {
+          _loadedBooksummary[temp[i]["bookType"]] = [temp[i]];
+        }
+      }
       notifyListeners();
     });
   }
