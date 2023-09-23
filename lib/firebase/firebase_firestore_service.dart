@@ -1,3 +1,4 @@
+import 'package:bootstrap_library/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -71,5 +72,12 @@ class FirebaseFirestoreService {
         .collection("BookContent")
         .doc("$author$title")
         .get();
+  }
+
+  static Future<Widget> getBookTextWidget(String title, String author) async {
+    return Padding(
+      padding: const EdgeInsets.all(globalEdgePadding),
+      child: Text((await getBookText(title, author))["text"], style: const TextStyle(height: 2),),
+    );
   }
 }

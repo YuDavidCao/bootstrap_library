@@ -64,7 +64,8 @@ class _BookSummaryPageState extends State<BookSummaryPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //TODO
+          Navigator.of(context).pushNamed("/ReadPage",
+              arguments: [widget.bookData["title"], widget.bookData["author"]]);
         },
         backgroundColor: tenUIColor,
         child: const Text(

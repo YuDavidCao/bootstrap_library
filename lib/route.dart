@@ -24,6 +24,17 @@ class RouteGenerator {
           duration: const Duration(milliseconds: pageTransitionTime),
           reverseDuration: const Duration(milliseconds: pageTransitionTime),
         );
+      case '/ReadPage':
+        List<dynamic> data = settings.arguments as List<dynamic>;
+        return PageTransition(
+          child: ReadPage(
+            title: data[0],
+            author: data[1],
+          ),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: pageTransitionTime),
+          reverseDuration: const Duration(milliseconds: pageTransitionTime),
+        );
       case '/BookSummaryPage':
         List<dynamic> data = settings.arguments as List<dynamic>;
         return PageTransition(
