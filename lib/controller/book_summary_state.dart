@@ -50,6 +50,10 @@ class BookSummaryState with ChangeNotifier {
       List<DocumentSnapshot> temp = querySnapshot.docs;
       _loadedBooksummary = {};
       for (int i = 0; i < temp.length; i++) {
+        if (temp[i]["featured"]) {
+          _featuredBook = temp[i];
+          continue;
+        }
         if (_loadedBooksummary.containsKey(temp[i]["bookType"])) {
           _loadedBooksummary[temp[i]["bookType"]]!.add(temp[i]);
         } else {

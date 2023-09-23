@@ -6,6 +6,7 @@ import 'package:bootstrap_library/widgets/global_botton_navigation_bar.dart';
 import 'package:bootstrap_library/widgets/global_search_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,6 +33,10 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         height: globalEdgePadding * 2,
                       ),
+                      GlobalSearchBar(initialText: "", performSearch: (a) {}),
+                      if (bookSummaryState.featuredBook != null)
+                        FeaturedBookWidget(
+                            bookData: bookSummaryState.featuredBook!),
                       ...bookSummaryState.loadedBooksummary.entries.map((e) {
                         print(e.value.length);
                         return TypeOfBookWidget(type: e.key, bookList: e.value);
@@ -93,11 +98,40 @@ class TypeOfBookWidget extends StatelessWidget {
 }
 
 class FeaturedBookWidget extends StatelessWidget {
-  const FeaturedBookWidget({super.key});
+  final DocumentSnapshot bookData;
+  const FeaturedBookWidget({super.key, required this.bookData});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+            decoration: const BoxDecoration(
+                color: thirtyUIColor,
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            padding: const EdgeInsets.all(globalEdgePadding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  bookData["title"],
+                  style: GoogleFonts.roboto(
+                      textStyle: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+                ),
+                const SizedBox(
+                  height: globalEdgePadding,
+                ),
+                Text(
+                  bookData["author"],
+                  style: const TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
 

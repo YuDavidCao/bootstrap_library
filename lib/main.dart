@@ -1,4 +1,3 @@
-import 'package:bootstrap_library/controller/book_summary_state.dart';
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase_options.dart';
 import 'package:bootstrap_library/pages/login_page.dart';
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
               900: Color(0xFF517551),
             }),
           ),
-          home: const LoginPage(),
+          home: const HomePage(),
           onGenerateRoute: RouteGenerator.generateRoute,
         ),
       ),
