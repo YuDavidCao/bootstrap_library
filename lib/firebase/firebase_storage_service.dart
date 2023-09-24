@@ -26,7 +26,16 @@ class FirebaseStorageService {
         .getDownloadURL();
   }
 
-  static Future<Widget> renderBookImage(String id) async {
-    return Image.network(await FirebaseStorageService.getImageBookImageUrl(id));
+  static Future<Widget> renderBookImage(String id, bool mini) async {
+    if (mini) {
+      return SizedBox(
+        height: 100,
+        child: Image.network(
+            await FirebaseStorageService.getImageBookImageUrl(id)),
+      );
+    } else {
+      return Image.network(
+          await FirebaseStorageService.getImageBookImageUrl(id));
+    }
   }
 }

@@ -98,7 +98,7 @@ class _MyBookWidgetState extends State<MyBookWidget> {
             ),
             FutureBuilder<Widget>(
               future:
-                  FirebaseStorageService.renderBookImage(widget.bookData.id),
+                  FirebaseStorageService.renderBookImage(widget.bookData.id, true),
               builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!;

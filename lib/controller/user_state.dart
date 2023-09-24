@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,22 +19,14 @@ class UserState with ChangeNotifier {
     _username = value;
   }
 
-  // List<DocumentSnapshot> myBooks() {
-  //   List<DocumentSnapshot> returnedVal = [];
-  //   _loadedBooksummary.entries.map((entry) {
-  //     for (int i = 0; i < entry.value.length; i++) {
-  //       returnedVal.add(entry.value[i]);
-  //     }
-  //   });
-  //   return returnedVal;
-  // }
-
   UserState() {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       _user = event;
-      getUserInfo();
-      reinitialize();
-      notifyListeners();
+      if (_user != null) {
+        getUserInfo();
+        reinitialize();
+        notifyListeners();
+      }
     });
   }
 

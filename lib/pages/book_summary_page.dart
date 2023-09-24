@@ -43,7 +43,7 @@ class _BookSummaryPageState extends State<BookSummaryPage> {
       body: ListView(
         children: [
           FutureBuilder<Widget>(
-            future: FirebaseStorageService.renderBookImage(widget.bookData.id),
+            future: FirebaseStorageService.renderBookImage(widget.bookData.id, false),
             builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
               if (snapshot.hasData) {
                 return snapshot.data!;
@@ -60,44 +60,60 @@ class _BookSummaryPageState extends State<BookSummaryPage> {
           ),
           Padding(
             padding: const EdgeInsets.all(globalEdgePadding),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${widget.bookData['title']} · ${widget.bookData['author']}",
+                  "${widget.bookData['title']}",
                   style: GoogleFonts.roboto(fontSize: 20),
                 ),
-                ...[1, 2, 3, 4, 5].map((int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      FirebaseFirestoreService.setRating(
-                          widget.bookData['title'],
-                          widget.bookData['author'],
-                          index,
-                          Provider.of<UserState>(context, listen: false).email);
-                    },
-                    child: SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: ClipPath(
-                        clipper: StarClipper(points: 5),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: (index <= roundedBookRating)
-                                ? Colors.amber
-                                : Colors.white,
-                          ),
-                          child: CustomPaint(
-                            painter: StarBorderPainter(),
+                const SizedBox(
+                  height: globalMarginPadding,
+                ),
+                Text(
+                  " ${widget.bookData['author']}",
+                  style: GoogleFonts.roboto(fontSize: 15),
+                ),
+                const SizedBox(
+                  height: globalMarginPadding,
+                ),
+                Row(
+                  children: [
+                    ...[1, 2, 3, 4, 5].map((int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          FirebaseFirestoreService.setRating(
+                              widget.bookData['title'],
+                              widget.bookData['author'],
+                              index,
+                              Provider.of<UserState>(context, listen: false)
+                                  .email);
+                        },
+                        child: SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: ClipPath(
+                            clipper: StarClipper(points: 5),
                             child: Container(
-                              height: 400.0,
+                              decoration: BoxDecoration(
+                                color: (index <= roundedBookRating)
+                                    ? Colors.amber
+                                    : Colors.white,
+                              ),
+                              child: CustomPaint(
+                                painter: StarBorderPainter(),
+                                child: Container(
+                                  height: 400.0,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
+                  ],
+                ),
               ],
             ),
           ),
@@ -110,7 +126,10 @@ class _BookSummaryPageState extends State<BookSummaryPage> {
           Padding(
             padding: const EdgeInsets.all(globalEdgePadding),
             child: Text(widget.bookData["summary"]),
-          )
+          ),
+          const SizedBox(
+            height: 100,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

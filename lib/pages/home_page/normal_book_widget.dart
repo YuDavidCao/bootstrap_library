@@ -38,8 +38,7 @@ class _NormalBookWidgetState extends State<NormalBookWidget> {
             .pushNamed("/BookSummaryPage", arguments: [widget.bookData]);
       },
       child: Container(
-        height: 200,
-        width: 100,
+        width: 130,
         // decoration: BoxDecoration(
         //   border: Border.all(color: Colors.black),
         // ),
@@ -49,7 +48,7 @@ class _NormalBookWidgetState extends State<NormalBookWidget> {
           children: [
             FutureBuilder<Widget>(
               future:
-                  FirebaseStorageService.renderBookImage(widget.bookData.id),
+                  FirebaseStorageService.renderBookImage(widget.bookData.id, true),
               builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
                 if (snapshot.hasData) {
                   return snapshot.data!;
@@ -94,7 +93,7 @@ class _NormalBookWidgetState extends State<NormalBookWidget> {
               ],
             ),
             Text(
-              widget.bookData["title"],
+              widget.bookData["title"],              
               style: GoogleFonts.roboto(
                   textStyle: const TextStyle(
                       fontSize: 15, fontWeight: FontWeight.bold)),

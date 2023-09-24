@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bootstrap_library/constants.dart';
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase/firebase_firestore_service.dart';
-import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +39,8 @@ class _ReadPageState extends State<ReadPage> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         scrollToBookMark(bookMark);
       });
+    } else {
+      moved = true;
     }
     scrollController.addListener(() {
       currentPixel = scrollController.offset;
@@ -49,8 +50,6 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void dispose() {
-    FirebaseFirestoreService.addBookAsInterest(widget.title, widget.author,
-        Provider.of<UserState>(context, listen: false).email);
     scrollController.dispose();
     super.dispose();
   }
@@ -61,7 +60,7 @@ class _ReadPageState extends State<ReadPage> {
         moved = true;
         Scrollable.ensureVisible(
           keys[bookmark].currentContext!,
-          alignment: 0.2,
+          alignment: 0.0,
           duration: const Duration(milliseconds: 500),
         );
         timer.cancel();
@@ -104,8 +103,11 @@ class _ReadPageState extends State<ReadPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
+            FirebaseFirestoreService.addBookAsInterest(
+                widget.title,
+                widget.author,
+                Provider.of<UserState>(context, listen: false).email);
             if (moved) {
-              GlobalLogger.warn("called");
               FirebaseFirestoreService.setBookmarkPosition(
                   binarySearchForCurrentWord(currentPixel),
                   widget.title,
@@ -153,9 +155,6 @@ class _ReadPageState extends State<ReadPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        print(keys[301].currentContext?.findRenderObject() as RenderBox);
-      }),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bootstrap_library/widgets/icon_text_button.dart';
 import 'package:flutter/material.dart';
@@ -47,8 +46,7 @@ class GlobalBottomAppBar extends StatelessWidget {
                           Icons.person,
                           color: thirtyUIColor,
                         ),
-                        onPressed: () async {
-                          GlobalLogger.log(1);
+                        onPressed: () async {                          
                           await FirebaseAuth.instance.signOut();
                           if (context.mounted) {
                             Navigator.of(context).pushReplacementNamed(

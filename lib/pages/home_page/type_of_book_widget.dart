@@ -1,6 +1,7 @@
 import 'package:bootstrap_library/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'normal_book_widget.dart';
 
 class TypeOfBookWidget extends StatelessWidget {
@@ -18,7 +19,11 @@ class TypeOfBookWidget extends StatelessWidget {
         const SizedBox(
           height: globalMarginPadding,
         ),
-        Text(type),
+        Text(
+          type,
+          style: GoogleFonts.roboto(
+              textStyle: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
         const Divider(
           color: Colors.grey,
           thickness: 2,
@@ -32,9 +37,6 @@ class TypeOfBookWidget extends StatelessWidget {
               return NormalBookWidget(bookData: bookList[index]);
             },
           ),
-        ),
-        const SizedBox(
-          height: globalMarginPadding,
         ),
       ],
     );

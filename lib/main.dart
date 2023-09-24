@@ -1,6 +1,5 @@
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase_options.dart';
-import 'package:bootstrap_library/pages/home_page/home_page.dart';
 import 'package:bootstrap_library/pages/login_page.dart';
 import 'package:bootstrap_library/route.dart';
 import 'package:firebase_core/firebase_core.dart';
