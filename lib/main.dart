@@ -1,5 +1,6 @@
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase_options.dart';
+import 'package:bootstrap_library/pages/home_page/home_page.dart';
 import 'package:bootstrap_library/pages/login_page.dart';
 import 'package:bootstrap_library/route.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
               900: Color(0xFF517551),
             }),
           ),
-          home: const LoginPage(),
+          home: const HomePage(),
           onGenerateRoute: RouteGenerator.generateRoute,
         ),
       ),

@@ -1,8 +1,10 @@
 import 'package:bootstrap_library/constants.dart';
+import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase/firebase_storage_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class BookSummaryPage extends StatefulWidget {
   final DocumentSnapshot bookData;
@@ -64,8 +66,10 @@ class _BookSummaryPageState extends State<BookSummaryPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).pushNamed("/ReadPage",
-              arguments: [widget.bookData["title"], widget.bookData["author"]]);
+          Navigator.of(context).pushNamed("/ReadPage", arguments: [
+            widget.bookData["title"],
+            widget.bookData["author"],
+          ]);
         },
         backgroundColor: tenUIColor,
         child: const Text(

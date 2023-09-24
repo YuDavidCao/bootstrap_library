@@ -74,10 +74,36 @@ class FirebaseFirestoreService {
         .get();
   }
 
-  static Future<Widget> getBookTextWidget(String title, String author) async {
-    return Padding(
-      padding: const EdgeInsets.all(globalEdgePadding),
-      child: Text((await getBookText(title, author))["text"], style: const TextStyle(height: 2),),
-    );
+  static Future<String> getBookTextWidget(String title, String author) async {
+    return (await getBookText(title, author))["text"];
   }
+
+  static void addBookAsInterest(String title, String author) async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection("User")
+        .doc("1@1.com")
+        .collection("books")
+        .doc("$author$title");
+    if (!(await documentReference.get()).exists) {
+      documentReference
+          .set({"note": "", "rated": false, "rating": 0, "bookmark": 0});
+    }
+  }
+
+  static void setBookmarkPosition(
+      int bookmarkPosition, String title, String author) async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection("User")
+        .doc("1@1.com")
+        .collection("books")
+        .doc("$author$title");
+    if (!(await documentReference.get()).exists) {
+      documentReference
+          .set({"note": "", "rated": false, "rating": 0, "bookmark": 0});
+    } else {
+      documentReference.update({"bookmark": bookmarkPosition});
+    }
+  }
+
+  static firestoreTest() {}
 }
