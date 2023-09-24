@@ -56,6 +56,7 @@ class UserState with ChangeNotifier {
           .snapshots()
           .listen((querySnapshot) async {
         List<DocumentSnapshot> temp = querySnapshot.docs;
+        books = {};
         for (int i = 0; i < temp.length; i++) {
           books[temp[i].id] = temp[i];
         }
