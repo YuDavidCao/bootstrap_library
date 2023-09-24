@@ -1,4 +1,3 @@
-import 'package:bootstrap_library/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -78,10 +77,11 @@ class FirebaseFirestoreService {
     return (await getBookText(title, author))["text"];
   }
 
-  static void addBookAsInterest(String title, String author) async {
+  static void addBookAsInterest(
+      String title, String author, String userEmail) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection("User")
-        .doc("1@1.com")
+        .doc(userEmail)
         .collection("books")
         .doc("$author$title");
     if (!(await documentReference.get()).exists) {
@@ -90,11 +90,11 @@ class FirebaseFirestoreService {
     }
   }
 
-  static void setBookmarkPosition(
-      int bookmarkPosition, String title, String author) async {
+  static void setBookmarkPosition(int bookmarkPosition, String title,
+      String author, String userEmail) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection("User")
-        .doc("1@1.com")
+        .doc(userEmail)
         .collection("books")
         .doc("$author$title");
     if (!(await documentReference.get()).exists) {
@@ -102,6 +102,41 @@ class FirebaseFirestoreService {
           .set({"note": "", "rated": false, "rating": 0, "bookmark": 0});
     } else {
       documentReference.update({"bookmark": bookmarkPosition});
+    }
+  }
+
+  static void setRating(
+      String title, String author, int rating, String userEmail) async {
+    DocumentReference userReference = FirebaseFirestore.instance
+        .collection("User")
+        .doc(userEmail)
+        .collection("books")
+        .doc("$author$title");
+    DocumentReference bookreference = FirebaseFirestore.instance
+        .collection("BookSummary")
+        .doc("$author$title");
+    if (!(await userReference.get()).exists) {
+      bookreference.update({
+        "totalReviewerCount": FieldValue.increment(1),
+        "totalReviewPoints": FieldValue.increment(rating),
+      });
+      userReference
+          .set({"note": "", "rated": true, "rating": rating, "bookmark": 0});
+    } else {
+      DocumentSnapshot documentSnapshot = await userReference.get();
+      if (!documentSnapshot["rated"]) {
+        bookreference.update({
+          "totalReviewerCount": FieldValue.increment(1),
+          "totalReviewPoints": FieldValue.increment(rating),
+        });
+        userReference.update({"rated": true, "rating": rating});
+      } else {
+        int previousRating = documentSnapshot["rating"];
+        bookreference.update({
+          "totalReviewPoints": FieldValue.increment(rating - previousRating),
+        });
+        userReference.update({"rating": rating});
+      }
     }
   }
 

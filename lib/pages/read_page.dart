@@ -49,7 +49,8 @@ class _ReadPageState extends State<ReadPage> {
 
   @override
   void dispose() {
-    FirebaseFirestoreService.addBookAsInterest(widget.title, widget.author);
+    FirebaseFirestoreService.addBookAsInterest(widget.title, widget.author,
+        Provider.of<UserState>(context, listen: false).email);
     scrollController.dispose();
     super.dispose();
   }
@@ -108,7 +109,8 @@ class _ReadPageState extends State<ReadPage> {
               FirebaseFirestoreService.setBookmarkPosition(
                   binarySearchForCurrentWord(currentPixel),
                   widget.title,
-                  widget.author);
+                  widget.author,
+                  Provider.of<UserState>(context, listen: false).email);
             }
             Navigator.pop(context);
           },
