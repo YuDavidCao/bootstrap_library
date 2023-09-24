@@ -1,3 +1,5 @@
+import 'package:bootstrap_library/widgets/global_logger.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bootstrap_library/widgets/icon_text_button.dart';
 import 'package:flutter/material.dart';
 import '../constants.dart';
@@ -34,12 +36,33 @@ class GlobalBottomAppBar extends StatelessWidget {
                       iconTooltip: "Bookshelf",
                       currentPageName: onPageName,
                       iconData: Icons.book),
-                  IconTextButton(
-                      iconDescriptionText: "Profile",
-                      targetPageName: "ProfilePage",
-                      iconTooltip: "Profile",
-                      currentPageName: onPageName,
-                      iconData: Icons.person),
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: globalMarginPadding,
+                      ),
+                      IconButton(
+                        tooltip: "Log out",
+                        icon: const Icon(
+                          Icons.person,
+                          color: thirtyUIColor,
+                        ),
+                        onPressed: () async {
+                          GlobalLogger.log(1);
+                          await FirebaseAuth.instance.signOut();
+                          if (context.mounted) {
+                            Navigator.of(context).pushReplacementNamed(
+                              '/LoginPage',
+                            );
+                          }
+                        },
+                      ),
+                      const Text(
+                        "Logout",
+                        style: TextStyle(fontSize: 10, color: thirtyUIColor),
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),

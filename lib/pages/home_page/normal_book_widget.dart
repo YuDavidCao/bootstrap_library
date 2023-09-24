@@ -1,6 +1,5 @@
 import 'package:bootstrap_library/constants.dart';
 import 'package:bootstrap_library/firebase/firebase_storage_service.dart';
-import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:bootstrap_library/widgets/star_clipper.dart';
 import 'package:bootstrap_library/widgets/start_border_painter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

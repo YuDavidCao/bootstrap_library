@@ -6,7 +6,6 @@ import 'package:bootstrap_library/route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {

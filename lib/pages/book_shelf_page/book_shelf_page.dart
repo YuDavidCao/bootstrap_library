@@ -1,9 +1,7 @@
-import 'package:bootstrap_library/controller/book_summary_state.dart';
 import 'package:bootstrap_library/controller/user_state.dart';
 import 'package:bootstrap_library/firebase/firebase_firestore_service.dart';
 import 'package:bootstrap_library/pages/book_shelf_page/my_book_widget.dart';
 import 'package:bootstrap_library/widgets/global_botton_navigation_bar.dart';
-import 'package:bootstrap_library/widgets/global_logger.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
