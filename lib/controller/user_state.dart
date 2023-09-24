@@ -20,6 +20,16 @@ class UserState with ChangeNotifier {
     _username = value;
   }
 
+  // List<DocumentSnapshot> myBooks() {
+  //   List<DocumentSnapshot> returnedVal = [];
+  //   _loadedBooksummary.entries.map((entry) {
+  //     for (int i = 0; i < entry.value.length; i++) {
+  //       returnedVal.add(entry.value[i]);
+  //     }
+  //   });
+  //   return returnedVal;
+  // }
+
   UserState() {
     FirebaseAuth.instance.authStateChanges().listen((event) {
       _user = event;

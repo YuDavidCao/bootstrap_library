@@ -65,6 +65,10 @@ class FirebaseFirestoreService {
         .get();
   }
 
+  static Future<DocumentSnapshot> getBookSummaryById(String id) async {
+    return FirebaseFirestore.instance.collection("BookSummary").doc(id).get();
+  }
+
   static Future<DocumentSnapshot> getBookText(
       String title, String author) async {
     return FirebaseFirestore.instance

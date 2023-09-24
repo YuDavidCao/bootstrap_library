@@ -30,7 +30,7 @@ class GlobalBottomAppBar extends StatelessWidget {
                       iconData: Icons.explore),
                   IconTextButton(
                       iconDescriptionText: "Bookshelf",
-                      targetPageName: "BookshelfPage",
+                      targetPageName: "BookShelfPage",
                       iconTooltip: "Bookshelf",
                       currentPageName: onPageName,
                       iconData: Icons.book),
