@@ -24,6 +24,7 @@ class ReadPage extends StatefulWidget {
 
 class _ReadPageState extends State<ReadPage> {
   ScrollController scrollController = ScrollController();
+  bool moved = false;
   double currentPixel = 0.0;
   List<GlobalKey> keys = [];
 
@@ -56,6 +57,7 @@ class _ReadPageState extends State<ReadPage> {
   void scrollToBookMark(int bookmark) async {
     Timer.periodic(const Duration(seconds: 1), (timer) {
       if (keys[bookmark].currentContext != null) {
+        moved = true;
         Scrollable.ensureVisible(
           keys[bookmark].currentContext!,
           alignment: 0.2,
@@ -101,10 +103,13 @@ class _ReadPageState extends State<ReadPage> {
         automaticallyImplyLeading: false,
         leading: IconButton(
           onPressed: () {
-            FirebaseFirestoreService.setBookmarkPosition(
-                binarySearchForCurrentWord(currentPixel),
-                widget.title,
-                widget.author);
+            if (moved) {
+              GlobalLogger.warn("called");
+              FirebaseFirestoreService.setBookmarkPosition(
+                  binarySearchForCurrentWord(currentPixel),
+                  widget.title,
+                  widget.author);
+            }
             Navigator.pop(context);
           },
           icon: const Icon(Icons.arrow_back),
