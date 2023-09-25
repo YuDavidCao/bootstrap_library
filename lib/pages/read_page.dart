@@ -102,11 +102,7 @@ class _ReadPageState extends State<ReadPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         leading: IconButton(
-          onPressed: () {
-            FirebaseFirestoreService.addBookAsInterest(
-                widget.title,
-                widget.author,
-                Provider.of<UserState>(context, listen: false).email);
+          onPressed: () async {
             if (moved) {
               FirebaseFirestoreService.setBookmarkPosition(
                   binarySearchForCurrentWord(currentPixel),

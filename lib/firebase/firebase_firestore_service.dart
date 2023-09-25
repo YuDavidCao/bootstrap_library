@@ -103,7 +103,7 @@ class FirebaseFirestoreService {
         .doc("$author$title");
     if (!(await documentReference.get()).exists) {
       documentReference
-          .set({"note": "", "rated": false, "rating": 0, "bookmark": 0});
+          .set({"note": "", "rated": false, "rating": 0, "bookmark": bookmarkPosition});
     } else {
       documentReference.update({"bookmark": bookmarkPosition});
     }
